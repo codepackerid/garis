@@ -118,7 +118,7 @@
           <div id="results" class="mt-2"></div>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
       </form>
     </div>
   </div>
