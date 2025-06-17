@@ -10,37 +10,32 @@
 
   <style>
     body {
-      background-color:rgb(179, 176, 176);
+      background-color:rgb(44, 43, 43);
       font-family: 'Nunito', sans-serif;
     }
 
     .main-box {
-      background: none;
+      background: #fff;
       border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      overflow: hidden;
       margin: 20px auto;
       max-width: 1500px;
-      height: 92vh;
-      display: flex;
-      overflow: hidden;
-      box-shadow: none;
     }
 
     .left-col {
       background: url('flyergkp.png') no-repeat center center;
       background-size: cover;
-      width: 50%;
+      min-height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
 
-    .right-col {
-      background: #e0e0e0; /* abu-abu sedikit tua */
+    .form-container {
       padding: 30px;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      background-color: #e4e4e4;
     }
 
     .form-container h3 {
@@ -59,67 +54,72 @@
       .left-col {
         display: none;
       }
-
-      .right-col {
-        width: 100%;
-      }
-
-      .main-box {
-        height: auto;
-      }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="main-box">
+  <div class="row main-box">
     
     <!-- Kiri: Gambar -->
-    <div class="left-col"></div>
+    <div class="col-md-6 left-col">
+      <!-- gambar background diatur via CSS -->
+    </div>
 
     <!-- Kanan: Form -->
-    <div class="right-col">
-      <div class="form-container">
-        <h3>Buku Tamu</h3>
-        <form id="bukutamu-form" method="POST">
-          <div class="form-group">
-            <label>Tanggal Kunjungan</label>
-            <input type="date" class="form-control" name="tanggal_kunjungan" id="tanggal_kunjungan" required>
-          </div>
-          <div class="form-group">
-            <label>Nama</label>
-            <input type="text" class="form-control" name="nama" required>
-          </div>
-          <input type="hidden" name="tujuan" value="-">
-          <div class="form-group">
-            <label>Asal</label>
-            <select class="form-control" name="asal" required>
-              <option value="">Pilih Asal</option>
-              <option value="Instansi">Instansi</option>
-              <option value="Siswa">Siswa</option>
-              <option value="Umum">Umum</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Pesan</label>
-            <textarea class="form-control" name="keperluan" rows="3" required></textarea>
-          </div>
-          <input type="hidden" name="telepon" value="-">
-          <input type="hidden" name="email" value="-">
+    <div class="col-md-6 form-container">
+      <h3>Formulir Buku Tamu</h3>
+      <form id="bukutamu-form" method="POST">
+        
+        <div class="form-group">
+          <label>Tanggal Kunjungan</label>
+          <input type="date" class="form-control" name="tanggal_kunjungan" id="tanggal_kunjungan" readonly required>
+        </div>
 
-          <!-- Foto -->
-          <div class="form-group text-center">
-            <label>Ambil Foto</label>
-            <div id="my_camera" class="mb-2"></div>
-            <button type="button" class="btn btn-primary btn-sm" onclick="takeSnapshot()">Ambil Foto</button>
-            <input type="hidden" name="foto" id="foto">
-            <div id="results" class="mt-2"></div>
-          </div>
+        <div class="form-group">
+          <label>Nama</label>
+          <input type="text" class="form-control" name="nama" required>
+        </div>
 
-          <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-      </div>
+        <input type="hidden" name="tujuan" value="-">
+
+        <!-- Radio Button Asal -->
+        <div class="form-group">
+          <label>Asal</label><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="asal" id="instansi" value="Instansi" required>
+            <label class="form-check-label" for="instansi">Instansi</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="asal" id="siswa" value="Siswa">
+            <label class="form-check-label" for="siswa">Siswa</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="asal" id="umum" value="Umum">
+            <label class="form-check-label" for="umum">Umum</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Pesan</label>
+          <textarea class="form-control" name="keperluan" rows="3" required></textarea>
+        </div>
+
+        <input type="hidden" name="telepon" value="-">
+        <input type="hidden" name="email" value="-">
+
+        <!-- Foto -->
+        <div class="form-group text-center">
+          <label>Ambil Foto</label>
+          <div id="my_camera" class="mb-2"></div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="takeSnapshot()">Ambil Foto</button>
+          <input type="hidden" name="foto" id="foto">
+          <div id="results" class="mt-2"></div>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
+      </form>
     </div>
   </div>
 </div>
@@ -147,6 +147,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
+  // Set tanggal hari ini
+  document.addEventListener('DOMContentLoaded', function () {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('tanggal_kunjungan').value = today;
+  });
+
+  // Webcam
   Webcam.set({
     width: 240,
     height: 180,
@@ -162,12 +169,6 @@
     });
   }
 
-  // Auto-set tanggal hari ini
-  document.addEventListener('DOMContentLoaded', function () {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('tanggal_kunjungan').value = today;
-  });
-
   document.getElementById('bukutamu-form').addEventListener('submit', function(event) {
     event.preventDefault();
     let formData = new FormData(this);
@@ -182,6 +183,7 @@
         $('#notifikasiModal').modal('show');
         document.getElementById('bukutamu-form').reset();
         document.getElementById('results').innerHTML = "";
+        document.getElementById('tanggal_kunjungan').value = new Date().toISOString().split('T')[0];
       } else {
         alert(data.message);
       }
