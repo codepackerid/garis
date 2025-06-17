@@ -10,7 +10,7 @@
 
   <style>
     body {
-      background-color: #f2f2f2;
+      background-color:rgb(179, 176, 176);
       font-family: 'Nunito', sans-serif;
     }
 
