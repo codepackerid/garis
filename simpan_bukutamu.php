@@ -4,9 +4,11 @@ include 'config.php';
 header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tanggal_kunjungan = $_POST['tanggal_kunjungan'] ?? '';
+    // Set tanggal kunjungan ke hari ini karena dihapus dari form
+    $tanggal_kunjungan = date('Y-m-d');
+    
     $nama = $_POST['nama'] ?? '';
-    $instansi = $_POST['instansi'] ?? ''; // Tambahan instansi
+    $instansi = $_POST['instansi'] ?? '';
     $tujuan = $_POST['tujuan'] ?? '';
     $asal = $_POST['asal'] ?? '';
     $keperluan = $_POST['keperluan'] ?? '';
@@ -14,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'] ?? '';
     $foto = $_POST['foto'] ?? '';
 
-    if (empty($tanggal_kunjungan) || empty($nama) || empty($instansi) || empty($tujuan) || empty($asal) || empty($keperluan)) {
+    // Validasi field yang masih ada di form
+    if (empty($nama) || empty($instansi) || empty($asal) || empty($keperluan) || empty($foto)) {
         echo json_encode(["success" => false, "message" => "Semua field wajib diisi!"]);
         exit;
     }
@@ -26,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Data berhasil disimpan"]);
     } else {
-        echo json_encode(["success" => false, "message" => "Gagal menyimpan data"]);
+        echo json_encode(["success" => false, "message" => "Gagal menyimpan data: " . $stmt->error]);
     }
 
     $stmt->close();
