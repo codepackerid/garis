@@ -84,7 +84,6 @@
 
         <input type="hidden" name="tujuan" value="-">
 
-        <!-- Radio Button Asal -->
         <div class="form-group">
           <label>Asal</label><br>
           <div class="form-check form-check-inline">
@@ -97,8 +96,13 @@
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="asal" id="umum" value="Umum">
-            <label class="form-check-label" for="umum">Umum</label>
+            <label class="form-check-label" for="umum">Umum / Orang Tua</label>
           </div>
+        </div>
+
+        <div class="form-group">
+            <label>Instansi</label>
+        <input type="text" class="form-control" name="instansi" placeholder="Nama Instansi / Sekolah / Organisasi" required>
         </div>
 
         <div class="form-group">
